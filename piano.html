@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="input"><button onclick="saveMemo()">Save</button><br><br>
+    
+
+    <button onclick="playPiano('C4')">C4</button>
+    <button  onclick="playPiano('D4')">D4</button>
+    <button  onclick="playPiano('E4')">E4</button>
+    <button  onclick="playPiano('F4')">F4</button>
+    <button  onclick="playPiano('G4')">G4</button>
+    <button  onclick="playPiano('A4')">A4</button>
+    <button  onclick="playPiano('B4')">B4</button>
+    <button  onclick="playPiano('C5')">C5</button>
+    <ul id="list"></ul>
+</body>
+<script>
+    let input = document.getElementById("input");
+    let cordArr = [];
+    let list = document.getElementById("list");
+    function playPiano(x){
+        let a = new Audio(`sound/${x}.mp3`)
+        a.play();
+        input.value  += `${x}`+",";
+        console.log(`you play ${x}`)
+         }
+
+        function saveMemo(){
+            let data = input.value;
+            cordArr.push(data);
+            input.value = ""
+            list.innerHTML = ""
+            cordArr.map(function(el,index){
+                list.innerHTML += `<li>${el}<button onclick="replay(${index})">replay</li>`
+            console.log("Save successful")
+            })
+           
+        } 
+        
+        function runMemo(arr,delay=1000){
+            arr.map(function(el,index){
+                setTimeout(playPiano,delay,el)
+                delay+=1000;
+            })
+        }
+        function replay(x){
+            let current = cordArr[x].split(",");
+            current.pop();
+            runMemo(current);
+            
+        }
+</script>
+</html>

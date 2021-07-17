@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+        width:800px;
+        height: 200px;
+        margin:200px auto ;
+        background-color:black;
+        display: flex;
+        color: blanchedalmond;
+        justify-content: space-around;
+        border-radius: 10px;
+    }
+    .left-side{
+       
+    }
+    #input{
+        width: 300px;
+        height: 30px;
+        margin-top: 30px;
+    }
+    .saveBtn{
+        width: 100px;
+        height: 30px;
+        border-radius: 10px;
+        background-color: chartreuse;
+        outline-color: none;
+    }
+    .key-code{
+        margin-top: 45px;
+    }
+    .key-code button{
+        width: 50px;
+        height: 100px;
+    }
+
+    .right-side{
+        width: 300px;
+        background-color: cadetblue;
+       margin: 34px 10px;
+       border-radius: 10px;
+       color: black;
+       overflow-y: scroll;
+       
+      
+        
+        
+    }
+    .cellbody{
+        width: 200px;
+        overflow: hidden;
+    }
+    
+    #list{
+        
+        list-style-type:none ;
+       overflow: hidden;
+        width:300px;
+       
+    }
+    .replay{
+        
+        background-color: darkseagreen;
+        width: 50px;
+        padding: 5px;
+    }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            
+                <input type="text" id="input"> <button onclick="saveItem()"  class="saveBtn">Save</button>
+            
+            <div class="key-code">
+                <button onclick="playPiano('C4')" >C4</button>
+                    <button onclick="playPiano('D4')">D4</button>
+                    <button onclick="playPiano('E4')">E4</button>
+                    <button onclick="playPiano('F4')">F4</button>
+                    <button onclick="playPiano('G4')">G4</button>
+                    <button onclick="playPiano('A4')">A4</button>
+                    <button onclick="playPiano('B4')">B4</button>
+                    <button onclick="playPiano('C5')">C5</button>
+            </div>
+        </div>
+        <div class="right-side">
+            <table id="list">
+
+            </table>
+            
+        </div>
+    </div>
+    
+    
+    
+    
+
+    <script>
+        let input = document.getElementById("input");
+        let list = document.getElementById("list");
+        
+        let inputArr = [];
+        function  playPiano(x){
+            let ad = new Audio(`sound/${x}.mp3`);
+        ad.play() ;
+        input.value += `${x}`+",";
+        }
+        function saveItem(){
+            let codeMemory = input.value;
+            inputArr.push(codeMemory);
+           
+            
+            
+            input.value = "";
+            list.innerHTML = "";
+            inputArr.map(function(el,index){
+                // list.innerHTML += `<li>${el} <button class="replay" onclick="runMemory(${index})">replay</button></li>`
+                list.innerHTML += `<tr>
+                                    <td class="cellbody">${el}</td>
+                                    <td><button class="replay" onclick="runMemory(${index})">replay</button></td>
+                                    </tr>`
+            })
+
+            
+        }
+        
+        function rePlay(arr,delay = 1000){
+            arr.map(function(el,index){
+               setTimeout( playPiano,delay,el);
+               delay +=1000;
+            })
+        }
+        function runMemory(x){
+            let current = inputArr[x].split(",");
+            current.pop();
+           
+           
+            rePlay(current);
+            
+        }
+        document.addEventListener("keyup",function(e){
+            let current = e.keyCode;
+            if(current === 65){
+                playPiano("C4");
+            }else if(current === 83){
+                playPiano("D4");
+            }else if(current === 68){
+                playPiano("E4");
+            }else if(current === 70){
+                playPiano("F4");
+            }else if(current === 74){
+                playPiano("G4");
+            }else if(current === 75){
+                playPiano("A4");
+            }else if(current === 76){
+                playPiano("B4");
+            }else {
+                playPiano("C5");
+            }
+        })
+       
+    </script>
+</body>
+</html>
